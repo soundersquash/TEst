@@ -39,8 +39,8 @@ class FlappyBirdGame {
 
     loadImages() {
         const imageSources = {
-            bird: 'resources/bird.png',
-            pipe: 'resources/pipe.png',
+            bird: 'resources/bird1.png',
+            pipe: 'resources/pipe1.png',
             background: 'resources/background.png',
             explosion: 'resources/explosion.png'
         };
