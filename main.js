@@ -590,18 +590,31 @@ class FlappyBirdGame {
     }
 
     renderPipes() {
-        this.ctx.fillStyle = '#2E8B57';
         this.pipes.forEach(pipe => {
-            // Top pipe
-            this.ctx.fillRect(pipe.x, 0, pipe.width, pipe.topHeight);
-            // Bottom pipe
-            this.ctx.fillRect(pipe.x, pipe.bottomY, pipe.width, pipe.bottomHeight);
-
-            // Pipe caps
-            this.ctx.fillStyle = '#228B22';
-            this.ctx.fillRect(pipe.x - 5, pipe.topHeight - 30, pipe.width + 10, 30);
-            this.ctx.fillRect(pipe.x - 5, pipe.bottomY, pipe.width + 10, 30);
-            this.ctx.fillStyle = '#2E8B57';
+            if (this.images.pipe && this.images.pipe.complete) {
+                // Use the loaded pipe image for both top and bottom pipes
+                // Top pipe (rotated 180 degrees)
+                this.ctx.save();
+                this.ctx.translate(pipe.x + pipe.width / 2, pipe.topHeight);
+                this.ctx.rotate(Math.PI);
+                this.ctx.drawImage(this.images.pipe, -pipe.width / 2, 0, pipe.width, pipe.topHeight);
+                this.ctx.restore();
+                
+                // Bottom pipe
+                this.ctx.drawImage(this.images.pipe, pipe.x, pipe.bottomY, pipe.width, pipe.bottomHeight);
+            } else {
+                // Fallback to drawing if image isn't loaded
+                this.ctx.fillStyle = '#2E8B57';
+                // Top pipe
+                this.ctx.fillRect(pipe.x, 0, pipe.width, pipe.topHeight);
+                // Bottom pipe
+                this.ctx.fillRect(pipe.x, pipe.bottomY, pipe.width, pipe.bottomHeight);
+                
+                // Pipe caps
+                this.ctx.fillStyle = '#228B22';
+                this.ctx.fillRect(pipe.x - 5, pipe.topHeight - 30, pipe.width + 10, 30);
+                this.ctx.fillRect(pipe.x - 5, pipe.bottomY, pipe.width + 10, 30);
+            }
         });
     }
 
@@ -609,39 +622,44 @@ class FlappyBirdGame {
         this.ctx.save();
         this.ctx.translate(this.bird.x + this.bird.width / 2, this.bird.y + this.bird.height / 2);
         this.ctx.rotate(this.bird.rotation);
-
-        // Bird body
-        this.ctx.fillStyle = '#FFD700';
-        this.ctx.beginPath();
-        this.ctx.ellipse(0, 0, this.bird.width / 2, this.bird.height / 2, 0, 0, Math.PI * 2);
-        this.ctx.fill();
-
-        // Bird wing animation
-        const wingOffset = Math.sin(this.bird.flapAnimation * Math.PI) * 10;
-        this.ctx.fillStyle = '#FFA500';
-        this.ctx.beginPath();
-        this.ctx.ellipse(-5, wingOffset, 15, 8, 0, 0, Math.PI * 2);
-        this.ctx.fill();
-
-        // Bird eye
-        this.ctx.fillStyle = 'white';
-        this.ctx.beginPath();
-        this.ctx.arc(10, -5, 8, 0, Math.PI * 2);
-        this.ctx.fill();
-        this.ctx.fillStyle = 'black';
-        this.ctx.beginPath();
-        this.ctx.arc(12, -5, 4, 0, Math.PI * 2);
-        this.ctx.fill();
-
-        // Bird beak
-        this.ctx.fillStyle = '#FF6347';
-        this.ctx.beginPath();
-        this.ctx.moveTo(this.bird.width / 2, 0);
-        this.ctx.lineTo(this.bird.width / 2 + 8, 2);
-        this.ctx.lineTo(this.bird.width / 2, 4);
-        this.ctx.closePath();
-        this.ctx.fill();
-
+        
+        // Use the loaded bird image instead of drawing shapes
+        if (this.images.bird && this.images.bird.complete) {
+            this.ctx.drawImage(this.images.bird, -this.bird.width / 2, -this.bird.height / 2, this.bird.width, this.bird.height);
+        } else {
+            // Fallback to drawing if image isn't loaded
+            this.ctx.fillStyle = '#FFD700';
+            this.ctx.beginPath();
+            this.ctx.ellipse(0, 0, this.bird.width / 2, this.bird.height / 2, 0, 0, Math.PI * 2);
+            this.ctx.fill();
+            
+            // Bird wing animation
+            const wingOffset = Math.sin(this.bird.flapAnimation * Math.PI) * 10;
+            this.ctx.fillStyle = '#FFA500';
+            this.ctx.beginPath();
+            this.ctx.ellipse(-5, wingOffset, 15, 8, 0, 0, Math.PI * 2);
+            this.ctx.fill();
+            
+            // Bird eye
+            this.ctx.fillStyle = 'white';
+            this.ctx.beginPath();
+            this.ctx.arc(10, -5, 8, 0, Math.PI * 2);
+            this.ctx.fill();
+            this.ctx.fillStyle = 'black';
+            this.ctx.beginPath();
+            this.ctx.arc(12, -5, 4, 0, Math.PI * 2);
+            this.ctx.fill();
+            
+            // Bird beak
+            this.ctx.fillStyle = '#FF6347';
+            this.ctx.beginPath();
+            this.ctx.moveTo(this.bird.width / 2, 0);
+            this.ctx.lineTo(this.bird.width / 2 + 8, 2);
+            this.ctx.lineTo(this.bird.width / 2, 4);
+            this.ctx.closePath();
+            this.ctx.fill();
+        }
+        
         this.ctx.restore();
     }
 
