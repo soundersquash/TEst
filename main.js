@@ -679,7 +679,7 @@ class FlappyBirdGame {
         this.ctx.fillStyle = '#36454F';
         this.ctx.font = 'bold 48px Playfair Display';
         this.ctx.textAlign = 'center';
-        this.ctx.fillText('Flappy Bird', this.canvas.width / 2, this.canvas.height / 2 - 50);
+        this.ctx.fillText('Sentient FlapAI', this.canvas.width / 2, this.canvas.height / 2 - 50);
 
         this.ctx.font = '24px Inter';
         this.ctx.fillText('Click or press SPACE to start', this.canvas.width / 2, this.canvas.height / 2 + 20);
